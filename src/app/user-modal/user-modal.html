@@ -1,0 +1,59 @@
+<div class="modal-backdrop" *ngIf="isOpen" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <header class="modal-header">
+            <h2>User Management</h2>
+            <button type="button" class="close-btn" (click)="closeModal()">&times;</button>
+        </header>
+
+        <div class="modal-body">
+            <!-- <p>User details and content will be entered here!</p> -->
+             <!-- CRUD Form -->
+              <form (submit)="saveUser()" class="user-form">
+                <h3>{{ isEditing ? 'Edit User' : 'Add New User' }}</h3>
+                <div class="form-row">
+                    <input type="text" placeholder="Name" [(ngModel)]="currentUser.name" name="name" required/>
+                    <input type="text" placeholder="Email" [(ngModel)]="currentUser.email" name="email" required/>
+                    <select [(ngModel)]="currentUser.role" name="role">
+                        <option value="Admin">Admin</option>
+                        <option value="User">User</option>
+                        <option value="User">Developer</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">{{ isEditing ? 'Update' : 'Add' }}</button>
+                    <button type="button" class="btn btn-secondary" *ngIf="isEditing" (click)="resetForm()">Cancel</button>
+                </div>
+              </form>
+
+              <!-- Read / List Users Table -->
+              <div class="table-container">
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of users">
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td><span class="badge" [class.admin]="user.role === 'Admin'">{{ user.role }}</span></td>
+                            <td class="actions">
+                                <button type="button" class="btn-icon edit" (click)="editUser(user)">Edit</button>
+                                <button type="button" class="btn-icon delete" (click)="deleteUser(user.id)">Delete</button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="users.length === 0">
+                           <td colspan="4" class="empty-state">No users found.</td> 
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+        </div>
+
+        <footer class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+        </footer>
+    </div>
+</div>>
